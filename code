@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+typedef double baht;
+
+typedef struct car_{
+    char brand[30];
+    int door;
+    baht price;
+} car;
+typedef struct showroom_{
+    char name[100];
+    car cars[100];
+} showroom;
+void update_price(car* cars, double percent){
+    printf("// Before: Car brand: %s, price: %.2lf\n",cars->brand,cars->price);
+    cars->price += cars->price*percent/100.0;
+    printf("// After: Car brand: %s, price: %.2lf\n",cars->brand,cars->price);
+}
+//find max price of car in showroom
+//use printf("%s\n",max_car(showrooms,3));
+//don't forget to add #include<stdlib.h>
+char* max_car(showroom showrooms, int count){
+    car* max_price=showrooms.cars;
+    for (int i=0;i<3;i++){
+        if (showrooms.cars[i].price>max_price->price){
+            max_price=&showrooms.cars[i];
+        }
+    }
+    char* brand=(char*) malloc(strlen(max_price->brand)*sizeof(char));
+    strcpy(brand,max_price->brand);
+    return brand;
+}
+int main(){
+    showroom showrooms;
+    strcpy(showrooms.name, "cars rental");
+    //car1
+    strcpy(showrooms.cars[0].brand, "BMW");
+    showrooms.cars[0].door = 2;
+    showrooms.cars[0].price = 2000000;
+    //car2
+    strcpy(showrooms.cars[1].brand, "benz");
+    showrooms.cars[1].door = 4;
+    showrooms.cars[1].price = 2100000;
+    //car3
+    strcpy(showrooms.cars[2].brand, "toyota");
+    showrooms.cars[2].door = 4;
+    showrooms.cars[2].price = 1200000;
+
+    //update price bmw +10%
+    update_price(&showrooms.cars[0],10);
+    //update price benz +7.5%
+    update_price(&showrooms.cars[1],7.5);
+    //update price toyota +15%
+    update_price(&showrooms.cars[2],15);
+
+    printf("--------SHOWROOM--------\n");
+    printf("name: %s\n", showrooms.name);
+    for (int i=0;i<3;i++){
+        printf("Car [%d] Brand: %s (%d doors) %.2lf Baht.\n",i+1,showrooms.cars[i].brand,showrooms.cars[i].door,showrooms.cars[i].price);
+    }
+    printf("%s\n",max_car(showrooms,3));
+}
